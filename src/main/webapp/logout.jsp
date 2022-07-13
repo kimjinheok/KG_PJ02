@@ -7,10 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<a href="boardList.jsp">게시판</a>
-<a href="Member.jsp">로그인</a>
-<a href="">공지사항</a>
-<a href="">QA</a>
-
+	<%
+		session.invalidate(); 
+		response.sendRedirect("login.jsp");
+	%>
 </body>
 </html>
