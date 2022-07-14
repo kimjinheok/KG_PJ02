@@ -10,22 +10,87 @@
 <body>
 	<h2 align="center"> 소통 게시판 </h2>
 	<jsp:useBean id="dao" class="board.Board1DAO" />
+	
+	<c:set var="totalPage" value="${dao.getTotalPage() }" />
+	
+	<c:set var="pc" value="${dao.pagingNum(param.start) }" />
+	
+	<c:set var="list" value="${dao.list(pc.startPage, pc.endPage) }" />
+	
 	<table border="1" align="center">
 		<tr>
 			<th>번호</th> <th>작성자</th> <th>제목</th> <th>조회수</th>
 			<th>등록일</th>
 		</tr>
-		<c:forEach var="dto" items="${dao.list() }">
-			<tr>
-				<td>${dto.bnum }</td> <td>${dto.name }</td>
-				<td><a href="content_view.jsp?bnum=${dto.bnum }">${dto.title }</a></td> 
-				<td>${dto.hit }</td> <td>${dto.savedate }</td>
-			</tr>
-		</c:forEach>
+		
+		<c:choose>
+			<c:when test="${list.size() == 0 }">
+				<tr>
+					<th colspan="5">데이터 없음</th>
+				</tr>
+			</c:when>
+			<c:otherwise>
+				<c:forEach var="dto" items="${list}">
+					<tr>
+						<td>${dto.bnum }</td> <td>${dto.name }</td>
+						<td>
+							<c:forEach begin="1" end="${dto.indent }">└</c:forEach>
+							<a href="content_view.jsp?bnum=${dto.bnum }">${dto.title }</a>
+						</td> 
+						<td>${dto.hit }</td> <td>${dto.savedate }</td>
+					</tr>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+		
+		
 		<tr>
 			<td colspan="5">
-				<input type="button" onclick="location.href='write.jsp'" value="글작성">
-				<input type="button" onclick="location.href='logout.jsp'" value="로그아웃">
+				<c:choose>
+					<c:when test="${param.start == null }">
+						<c:set var="s" value="1" />
+					</c:when>
+					<c:otherwise>
+						<c:set var="s" value="${param.start }" />
+					</c:otherwise>
+				</c:choose>
+				총 게시글 [${totalPage }]
+				<!-- 이전 버튼 -->
+				<c:choose>
+					<c:when test="${ s > 1 }">
+						<button type="button" onclick="location.href='boardList.jsp?start=${s - 1}'">이전</button>
+					</c:when>
+					<c:otherwise>
+						<button disabled>이전</button>
+					</c:otherwise>
+				</c:choose>
+				
+				<c:forEach var="cnt" begin="1" end="${ pc.totEndPage }" step="1">
+					<a href="boardList.jsp?start=${cnt }">
+						${cnt}
+					</a>
+				</c:forEach>
+				
+				<!-- 다음 버튼 -->
+				<c:choose>
+					<c:when test="${ s < pc.totEndPage }">
+						<button type="button" onclick="location.href='boardList.jsp?start=${s + 1}'">다음</button>
+					</c:when>
+					<c:otherwise>
+						<button disabled>다음</button>
+					</c:otherwise>
+				</c:choose>
+				
+				 ${s }/ ${pc.totEndPage } 
+				 <c:choose>
+				 	<c:when test="${login != null }">
+				 		<input type="button" onclick="location.href='write.jsp'" value="글작성">
+						<input type="button" onclick="location.href='logout.jsp'" value="로그아웃">
+				 	</c:when>
+				 	<c:otherwise>
+				 		<input type="button" onclick="location.href='login.jsp'" value="로그인">
+				 	</c:otherwise>
+				 </c:choose>
 			</td>
 		</tr>
 	</table>

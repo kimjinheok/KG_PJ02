@@ -30,7 +30,7 @@
 					<input type="button" onclick="location.href='boardList.jsp'" value="목록">
 					<input type="button" onclick="location.href='board1_Update.jsp?bnum=${dto.bnum }'" value="수정">
 					<input type="button" onclick="location.href='board1_delete.jsp?bnum=${dto.bnum}'" value="삭제">
-					<input type="button" onclick="location.href=''" value="댓글">
+					<input type="button" onclick="location.href='board1_replyWrite.jsp?bnum=${dto.bnum}'" value="댓글">
 				</td>
 			</tr>
 		</table>

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.apache.taglibs.standard.tag.common.fmt.ParseDateSupport;
+
 import DBPKG.DBConnect;
 
 public class Board1DAO {
@@ -23,11 +25,14 @@ public class Board1DAO {
 	}
 	
 	//게시판 전체 글 가져오기
-	public ArrayList<Board1DTO> list() {
-		String sql = "select * from PJ_board1";
+	public ArrayList<Board1DTO> list(int start, int end) {
+		String sql = "select B.* from(select rownum rn, A.* from(select * from PJ_board1 order by idgroup desc, step asc)A)B where rn between ? and ?";
 		ArrayList<Board1DTO> li = new ArrayList<Board1DTO>();
 		try {
 			ps = con.prepareStatement(sql);
+			ps.setInt(1, start);
+			ps.setInt(2, end);
+			
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				li.add(getBoard1());
@@ -103,9 +108,10 @@ public class Board1DAO {
 		return null;
 	}
 	
+	
 	//게시글 작성
 	public void insert(String id, String name, String title, String content) {
-		String sql = "insert into PJ_board1(bnum, id, name, title, content, idgroup, step, indent) values(test_board_seq.nextval,?,?,?,?,test_board_seq.currval,0,0)";
+		String sql = "insert into PJ_board1(bnum, id, name, title, content, idgroup, step, indent) values(PJ_board1_seq.nextval,?,?,?,?,PJ_board1_seq.currval,0,0)";
 		try {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, id);
@@ -143,6 +149,75 @@ public class Board1DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void replyShap(Board1DTO dto) {
+		String sql = "update PJ_board1 set step = step + 1 where idgroup = ? and step > ?";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, dto.getIdgroup());
+			ps.setInt(2, dto.getStep());
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void reply(Board1DTO dto) {
+		replyShap(dto);
+		
+		String sql = "insert into PJ_board1(bnum, id, name, title, content, idgroup, step, indent) values(PJ_board1_seq.nextval,?,?,?,?,?,?,?)";
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, dto.getId());
+			ps.setString(2, dto.getName());
+			ps.setString(3, dto.getTitle());
+			ps.setString(4, dto.getContent());
+			
+			ps.setInt(5, dto.getIdgroup());
+			ps.setInt(6, dto.getStep() + 1);
+			ps.setInt(7, dto.getIndent() + 1);
+			
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public int getTotalPage() {
+		String sql = "select count(*) from PJ_board1";
+		int cnt = 0;
+		try {
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				cnt = rs.getInt(1); //DB에서 1값을 통해 갯수를 가져옴
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	public PageCount pagingNum(int start) {
+		if(start == 0) {
+			start = 1;
+		}
+		PageCount pc = new PageCount();
+		int pageNum = 10; //한 페이지당 보여질 글 개수
+		int totalPage = getTotalPage(); //글 총 개수 얻어옴
+		int allPage = 0; //총 페이지 개수
+		allPage = totalPage / pageNum;
+		if(totalPage % pageNum != 0) {
+			allPage += 1; //페이지 하나 더 추가해줌
+		}
+		pc.setTotEndPage(allPage);
+		pc.setStartPage( (start - 1) * pageNum + 1);
+		pc.setEndPage(pageNum * start);
+		return pc;
 	}
 
 }
