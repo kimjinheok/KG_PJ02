@@ -12,8 +12,11 @@
 	<%
 		Board1DAO dao = new Board1DAO();
 		dao.delete(request.getParameter("bnum"));
-		response.sendRedirect("boardList.jsp");
 	%>
+	<script type="text/javascript">
+		alert("삭제가 완료되었습니다.")
+		location.href = "boardList.jsp"
+	</script>
 
 </body>
 </html>

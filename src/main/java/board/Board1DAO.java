@@ -43,6 +43,91 @@ public class Board1DAO {
 		return li;
 	}
 	
+	//boardNum
+	public ArrayList<Board1DTO> searchBnList(int val) {
+		String sql = "select * from PJ_board1 where bnum = ? order by idgroup desc, step asc";
+		ArrayList<Board1DTO> srbnli = new ArrayList<Board1DTO>();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, val);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				srbnli.add(getBoard1());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return srbnli;
+	}
+	
+//	public ArrayList<Board1DTO> searchBnList(String val) {
+//		ArrayList<Board1DTO> srbnli = new ArrayList<Board1DTO>();
+//		try {
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return srbnli;
+//	}
+	
+	//name
+	public ArrayList<Board1DTO> searchNmList(String val) {
+		String sql = "select * from PJ_board1 where name = ? order by idgroup desc, step asc";
+		ArrayList<Board1DTO> srnmli = new ArrayList<Board1DTO>();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, val);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				srnmli.add(getBoard1());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return srnmli;
+	}
+	
+	//title
+	public ArrayList<Board1DTO> searchTtList(String val) {
+		String keyword = "%" + val + "%";
+		String sql = "select * from PJ_board1 where title like ? order by idgroup desc, step asc";
+		//select * from PJ_board1 where title like '%1%' order by idgroup desc, step asc
+		ArrayList<Board1DTO> srnmli = new ArrayList<Board1DTO>();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, keyword);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				srnmli.add(getBoard1());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return srnmli;
+	}
+	
+	//content
+	public ArrayList<Board1DTO> searchCtList(String val) {
+		String keyword = "%" + val + "%";
+		String sql = "select * from PJ_board1 where content like ? order by idgroup desc, step asc";
+		ArrayList<Board1DTO> srnmli = new ArrayList<Board1DTO>();
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, keyword);
+			
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				srnmli.add(getBoard1());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return srnmli;
+	}
+	
+	
 	//rs가 갖고있는 내용을 DTO에 저장
 	private Board1DTO getBoard1() {
 		Board1DTO dto = new Board1DTO();
@@ -94,20 +179,39 @@ public class Board1DAO {
 	
 	//id를 통해서 이름값 가져오기
 	public Board1DTO getName(String id) {
-		String sql = "select * from PJ_board1 where id=" + id;
+		String sql = "select id, name from PJ_member where id=" + id;
 		Board1DTO dto = new Board1DTO();
 		try {
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				return getBoard1();
+				dto.setId(rs.getInt("id"));
+				dto.setName(rs.getString("name"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return dto;
 	}
 	
+	public Board1DTO getReNumHit(String bnum) {
+		String sql = "select bnum, hit, idgroup, step, indent from PJ_board1 where bnum=" + bnum;
+		Board1DTO dto = new Board1DTO();
+		try {
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				dto.setBnum(rs.getInt("bnum"));
+				dto.setHit(rs.getInt("hit"));
+				dto.setIdgroup(rs.getInt("idgroup"));
+				dto.setStep(rs.getInt("step"));
+				dto.setIndent(rs.getInt("indent"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
 	
 	//게시글 작성
 	public void insert(String id, String name, String title, String content) {
@@ -123,6 +227,21 @@ public class Board1DAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Board1DTO updateContent(String bnum) {
+		String sql = "select * from PJ_board1 where bnum=" + bnum;
+		Board1DTO dto = new Board1DTO();
+		try {
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				return getBoard1();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	//수정

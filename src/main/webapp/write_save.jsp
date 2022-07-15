@@ -11,6 +11,10 @@
 	<% request.setCharacterEncoding("utf-8"); %>
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	${dao.insert(param.id, param.name, param.title, param.content) }
-	<c:redirect url="boardList.jsp" />
+	
+	<script type="text/javascript">
+		alert("게시글 작성이 완료되었습니다.")
+		location.href = "boardList.jsp"
+	</script>
 </body>
 </html>

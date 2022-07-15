@@ -14,6 +14,11 @@
 	<jsp:useBean id="dto" class="board.Board1DTO" />
 	<jsp:setProperty property="*" name="dto"/>
 	${dao.update(dto) }
-	<c:redirect url="content_view.jsp?bnum=${dto.bnum }" />
+	
+	<script type="text/javascript">
+		alert("게시글 수정이 완료되었습니다.")
+		location.href = "content_view.jsp?bnum=${dto.bnum }"
+	</script>
+	
 </body>
 </html>

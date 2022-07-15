@@ -13,6 +13,10 @@
 	
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	${dao.reply(dto) }
-	<% response.sendRedirect("boardList.jsp"); %>
+	
+	<script type="text/javascript">
+		alert("답변 작성이 완료되었습니다.")
+		location.href = "boardList.jsp"
+	</script>
 </body>
 </html>
