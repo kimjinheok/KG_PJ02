@@ -6,12 +6,20 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+	<style type="text/css">
+		h2 { text-align: center; color: #785D12;}
+		table {margin: 0 auto; width: 70%; border: 1px solid #993800; padding: 20px; border-radius: 15px; background-color: beige; }
+		input { padding: 10px 20px; align: float-right; border-radius: 5px; border: #FFA46C; background-color: #FFA46C; }
+		input:active {border-radius: 10px; background-color: #993800;}
+	</style>
+	
 </head>
 <body>
-	<h2>대충 게시글 내용</h2>
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	<c:set var="dto" value="${dao.getContent(param.bnum) }" />
 	
+		<h2>${dto.bnum }번 게시글 내용</h2>
 		<table border="1">
 			<tr>
 				<td>번호 : ${dto.bnum }</td> <td colspan="2">제목 : ${dto.title }</td>
@@ -26,7 +34,7 @@
 				<td colspan="3">${dto.content }</td>
 			</tr>
 			<tr>
-				<td colspan="3">
+				<td colspan="3" align="center">
 					<input type="button" onclick="location.href='boardList.jsp'" value="목록">
 				<c:choose>
 				 	<c:when test="${login != null && login == dto.id }">

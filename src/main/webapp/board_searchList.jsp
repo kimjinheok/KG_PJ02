@@ -56,6 +56,11 @@
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
+			<tr>
+				<td colspan="5" align="center">
+					<input type="button" onclick="location.href='boardList.jsp'" value="목록">
+				</td>
+			</tr>
 	</table>
 	
 </body>

@@ -3,6 +3,8 @@ package board;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 
 import org.apache.taglibs.standard.tag.common.fmt.ParseDateSupport;
@@ -43,13 +45,13 @@ public class Board1DAO {
 		return li;
 	}
 	
-	//boardNum
-	public ArrayList<Board1DTO> searchBnList(int val) {
+	//BoardNum
+	public ArrayList<Board1DTO> searchBnList(String val) {
 		String sql = "select * from PJ_board1 where bnum = ? order by idgroup desc, step asc";
 		ArrayList<Board1DTO> srbnli = new ArrayList<Board1DTO>();
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, val);
+			ps.setString(1, val);
 			
 			rs = ps.executeQuery();
 			while(rs.next()) {
@@ -60,15 +62,6 @@ public class Board1DAO {
 		}
 		return srbnli;
 	}
-	
-//	public ArrayList<Board1DTO> searchBnList(String val) {
-//		ArrayList<Board1DTO> srbnli = new ArrayList<Board1DTO>();
-//		try {
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return srbnli;
-//	}
 	
 	//name
 	public ArrayList<Board1DTO> searchNmList(String val) {

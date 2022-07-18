@@ -8,17 +8,17 @@
 <title>Insert title here</title>
 
 	<style type="text/css">
-		h2 { background-color: #FFDAA2; color: #785D12;}
+		h2 { color: #785D12;}
+		table {margin: auto;}
 	</style>
 
 </head>
 <body>
 	<%@include file="header.jsp" %>
-	<h2 align="center"> 대충 게시판 </h2>
-	<hr>
-	
 	<h3>현재 로그인 정보<br> id : ${sessionScope.login }</h3>
 	<hr>
+	
+	<h2 align="center"> 우리의 이야기 게시판 </h2><br>
 	
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	
@@ -27,9 +27,8 @@
 	<c:set var="pc" value="${dao.pagingNum(param.start) }" />
 	
 	<c:set var="list" value="${dao.list(pc.startPage, pc.endPage) }" />
-	
 	<form action="board_searchList.jsp" method="get">
-		<table border="1" align="center">
+		<table border="1">
 			<tr>
 				<th>번호</th> <th>작성자</th> <th>제목</th> <th>조회수</th>
 				<th>등록일</th>
@@ -57,7 +56,7 @@
 			
 			
 			<tr>
-				<td colspan="5">
+				<td colspan="5" align="center">
 					<c:choose>
 						<c:when test="${param.start == null }">
 							<c:set var="s" value="1" />
@@ -94,15 +93,11 @@
 						</c:otherwise>
 					</c:choose>
 					
-					 ${s }/ ${pc.totEndPage } 
+					 현재 페이지 : ${s }/ ${pc.totEndPage } 
 					 <c:choose>
 					 	<c:when test="${login != null }">
 					 		<input type="button" onclick="location.href='write.jsp'" value="글작성">
-							<input type="button" onclick="location.href='logout.jsp'" value="로그아웃">
 					 	</c:when>
-					 	<c:otherwise>
-					 		<input type="button" onclick="location.href='login.jsp'" value="로그인">
-					 	</c:otherwise>
 					 </c:choose>
 				</td>
 			</tr>
@@ -120,7 +115,6 @@
 			</tr>
 		</table>
 	</form>
-	
 	<%@include file="footer.jsp" %>
 </body>
 </html>

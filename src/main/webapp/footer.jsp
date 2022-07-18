@@ -8,6 +8,8 @@
 </head>
 <body>
 	<hr>
-	<h3>대충 푸터 들어갈 자리</h3>
+	<div align="center">
+		<label style="color: purple;"><b><i>KG</i></b></label> <b>Copyright &copy; 2조 All Rights Reserved.</b> &nbsp;&nbsp;&nbsp;&nbsp; 김현수 | 정진우 | ....
+	</div>
 </body>
 </html>
