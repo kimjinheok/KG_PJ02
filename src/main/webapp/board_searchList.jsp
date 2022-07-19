@@ -7,9 +7,21 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+	<style type="text/css">
+		h2 { color: #785D12;}
+		table {margin: 0 auto; width: 70%; border: 1px solid #993800; padding: 20px; border-radius: 15px; background-color: beige; }
+		button { padding: 5px 5px; align: float-right; border-radius: 5px; border: #FFA46C; background-color: #FFA46C; }
+		button:active {border-radius: 5px; background-color: #993800;}
+	</style>
+	
 </head>
 <body>
-	<h2>대충 검색 결과</h2>
+
+	<%@include file="header.jsp" %>
+	
+	<h2 align="center">검색 결과</h2>
+	<br>
 	
 	<% request.setCharacterEncoding("utf-8"); %>
 	
@@ -34,7 +46,7 @@
 	
 	<table border="1" align="center">
 		<tr>
-			<td>번호</td> <td>작성자</td> <td>제목</td> <td>조회수</td> <td>등록일</td>
+			<th>번호</th> <th>작성자</th> <th>제목</th> <th>조회수</th> <th>등록일</th>
 		</tr>
 		
 		<c:choose>
@@ -58,10 +70,12 @@
 			</c:choose>
 			<tr>
 				<td colspan="5" align="center">
-					<input type="button" onclick="location.href='boardList.jsp'" value="목록">
+					<button type="button" onclick="location.href='boardList.jsp'">목록</button>
 				</td>
 			</tr>
 	</table>
+	
+	<%@include file="footer.jsp" %>
 	
 </body>
 </html>

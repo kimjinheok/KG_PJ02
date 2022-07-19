@@ -35,11 +35,15 @@
 
 </head>
 <body>
+
+	<%@include file="header.jsp" %>
 	
 	<jsp:useBean id="dao" class="board.Board1DAO" />	
 	<c:set var="dto" value="${dao.updateContent(param.bnum) }" />
 	
 	<h2 align="center">${dto.bnum }번 게시글 수정</h2>
+	<br>
+	
 	<form id="fo" action="modify.jsp" method="post">
 		<table>
 			<tr>
@@ -68,6 +72,8 @@
 			</tr>
 		</table>
 	</form>
+	
+	<%@include file="footer.jsp" %>
 	
 </body>
 </html>

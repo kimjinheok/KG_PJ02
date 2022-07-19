@@ -37,8 +37,12 @@
 	
 </head>
 <body>
+
+	<%@include file="header.jsp" %>
 	
 	<h2 align="center">게시글 작성</h2>
+	<br>
+	
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	
 	<c:set var="dto" value="${dao.getName(sessionScope.login) }" />
@@ -67,6 +71,8 @@
 			</tr>
 		</table>
 	</form>
+	
+	<%@include file="footer.jsp" %>
 
 </body>
 </html>

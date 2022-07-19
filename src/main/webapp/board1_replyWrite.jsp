@@ -37,7 +37,11 @@
 </head>
 <body>
 
+	<%@include file="header.jsp" %>
+
 	<h2 align="center">댓글 게시판 작성</h2>
+	<br>
+	
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	<c:set var="nhdto" value="${dao.getReNumHit(param.bnum) }" />
 	<c:set var="indto" value="${dao.getName(sessionScope.login) }" />
@@ -79,6 +83,8 @@
 			</tr>
 		</table>
 	</form>
+	
+	<%@include file="footer.jsp" %>
 
 </body>
 </html>

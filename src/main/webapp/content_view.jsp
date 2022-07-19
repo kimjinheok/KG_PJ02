@@ -16,10 +16,16 @@
 	
 </head>
 <body>
+
+	<%@include file="header.jsp" %>
+
+<div id="wrapper">
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	<c:set var="dto" value="${dao.getContent(param.bnum) }" />
 	
 		<h2>${dto.bnum }번 게시글 내용</h2>
+		<br>
+		
 		<table border="1">
 			<tr>
 				<td>번호 : ${dto.bnum }</td> <td colspan="2">제목 : ${dto.title }</td>
@@ -28,7 +34,7 @@
 				<td>아이디 : ${dto.id }</td> <td>작성자 : ${dto.name }</td> <td>조회수 : ${dto.hit }</td>
 			</tr>
 			<tr>
-				<td colspan="3">내용</td> 
+				<td colspan="3" align="center">내용</td> 
 			</tr>
 			<tr>
 				<td colspan="3">${dto.content }</td>
@@ -52,5 +58,9 @@
 				</td>
 			</tr>
 		</table>
+</div>
+		
+		<%@include file="footer.jsp" %>
+		
 </body>
 </html>

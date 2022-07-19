@@ -9,16 +9,30 @@
 
 	<style type="text/css">
 		h2 { color: #785D12;}
-		table {margin: auto;}
+		table {margin: 0 auto; width: 70%; border: 1px solid #993800; padding: 20px; border-radius: 15px; background-color: beige; }
+		button { padding: 5px 5px; align: float-right; border-radius: 5px; border: #FFA46C; background-color: #FFA46C; }
+		button:active {border-radius: 5px; background-color: #993800;}
+		input { border-radius: 15px; height: 25px; border: 1px solid #993800; width: 30%; }
+		#box { background-color: #F5D2BE; border-radius: 15px;}
 	</style>
+	
+	<script type="text/javascript">
+	function chkData() {
+		if (document.getElementById('val').value == "") {
+			alert("검색할 내용을 입력해주세요")
+			val.focus()
+		} else {
+			fo.submit();
+		}
+	}
+	</script>
 
 </head>
 <body>
 	<%@include file="header.jsp" %>
-	<h3>현재 로그인 정보<br> id : ${sessionScope.login }</h3>
-	<hr>
 	
-	<h2 align="center"> 우리의 이야기 게시판 </h2><br>
+	<h2 align="center"> 우리의 이야기 게시판 </h2>
+	<br>
 	
 	<jsp:useBean id="dao" class="board.Board1DAO" />
 	
@@ -27,7 +41,7 @@
 	<c:set var="pc" value="${dao.pagingNum(param.start) }" />
 	
 	<c:set var="list" value="${dao.list(pc.startPage, pc.endPage) }" />
-	<form action="board_searchList.jsp" method="get">
+	<form id="fo" action="board_searchList.jsp" method="get">
 		<table border="1">
 			<tr>
 				<th>번호</th> <th>작성자</th> <th>제목</th> <th>조회수</th>
@@ -65,7 +79,7 @@
 							<c:set var="s" value="${param.start }" />
 						</c:otherwise>
 					</c:choose>
-					총 게시글 [${totalPage }]
+					총 게시글 [${totalPage }]&nbsp;&nbsp;
 					<!-- 이전 버튼 -->
 					<c:choose>
 						<c:when test="${ s > 1 }">
@@ -93,24 +107,24 @@
 						</c:otherwise>
 					</c:choose>
 					
-					 현재 페이지 : ${s }/ ${pc.totEndPage } 
+					&nbsp;&nbsp; 현재 페이지 : ${s }/ ${pc.totEndPage } &nbsp;
 					 <c:choose>
 					 	<c:when test="${login != null }">
-					 		<input type="button" onclick="location.href='write.jsp'" value="글작성">
+					 		<button type="button" onclick="location.href='write.jsp'">글작성</button>
 					 	</c:when>
 					 </c:choose>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="5" align="center">
-					<select size="1" name="search">
+					<select size="1" name="search" id="box">
 						<option value="bnum">번호
 						<option value="name">작성자
 						<option value="title">제목
 						<option value="content">내용
 					</select>
-					<input type="text" name="val">
-					<input type="submit" onclick="" value="검색">
+					<input type="text" name="val" id="val">
+					<button type="button" onclick="chkData()">검색</button>
 				</td>
 			</tr>
 		</table>
